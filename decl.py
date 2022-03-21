@@ -3,12 +3,24 @@ from idlist import IdList
 
 class Decl:
 
-    def __init__(self) -> None:
-        pass
-
+    def __init__(self):
+        self.idList = IdList()
     def parseDecl(self):
-        return
+        if(settings.t.token() == 'int'):
+            settings.t.skipToken()
+            self.idList = IdList()
+            self.idList.parseIdList
+            if(settings.t.token() != ';'):
+                print("parseDecl: ERROR expecting \';\' received", settings.t.token())
+        else:
+            print("parseDecl: ERROR expecting \'int\' received", settings.t.token())
+
+    def printDecl(self):
+        print("int ", end='')
+        self.idList.printIdList()
+        print(';')
+
 
 
 settings.init()
-settings.t.newLine("A,B,C,D")
+settings.t.newLine("int A,B,C,D;")
