@@ -1,5 +1,24 @@
-class IdList:
-    idList = []
+import settings
+from id import Id
 
-    def parseIdList():
-        return
+class IdList:
+
+    def __init__(self):
+        self.idsList = []
+
+    def parseIdList(self):
+        newId = Id()
+        newId.parseId()
+        self.idsList.append(newId)
+        if(settings.t.token() == ','):
+            settings.t.skipToken()
+            self.parseIdList()
+    
+    def printIdList(self):
+        for i in range(len(self.idsList)-1):
+            self.idsList[i].printId()
+            print(", ", end='')
+        self.idsList[i+1].printId()
+        print()
+            
+

@@ -1,4 +1,3 @@
-from idlist import IdList
 import settings
 
 class Id:
@@ -15,6 +14,6 @@ class Id:
         print(self.id, end ='')
 
 
-settings.init()
-settings.t.newLine("A1")
-print(settings.t.idName())
+# settings.init()
+# settings.t.newLine("A1")
+# print(settings.t.idName())
