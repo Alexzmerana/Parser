@@ -7,7 +7,8 @@ class Id:
         self.id = settings.t.idName()
 
     def parseId(self):
-        Id.idDict[self.id] = 'nil'
+        if(self.id not in Id.idDict.keys()):
+            Id.idDict[self.id] = 'nil'
         settings.t.skipToken()
 
     def printId(self):
