@@ -5,10 +5,10 @@ class Decl:
 
     def __init__(self):
         self.idList = IdList()
+        
     def parseDecl(self):
         if(settings.t.token() == 'int'):
             settings.t.skipToken()
-            self.idList = IdList()
             self.idList.parseIdList()
             if(settings.t.token() != ';'):
                 print("parseDecl: ERROR expecting \';\' received", settings.t.token())
