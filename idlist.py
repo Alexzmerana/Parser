@@ -22,3 +22,8 @@ class IdList:
         
             
 
+# settings.init()
+# settings.t.newLine("A,B,C,D")
+# idList = IdList()
+# idList.parseIdList()
+# idList.printIdList()

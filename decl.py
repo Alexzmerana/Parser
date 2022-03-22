@@ -9,9 +9,10 @@ class Decl:
         if(settings.t.token() == 'int'):
             settings.t.skipToken()
             self.idList = IdList()
-            self.idList.parseIdList
+            self.idList.parseIdList()
             if(settings.t.token() != ';'):
                 print("parseDecl: ERROR expecting \';\' received", settings.t.token())
+            else: settings.t.skipToken()
         else:
             print("parseDecl: ERROR expecting \'int\' received", settings.t.token())
 
@@ -22,5 +23,8 @@ class Decl:
 
 
 
-settings.init()
-settings.t.newLine("int A,B,C,D;")
+# settings.init()
+# settings.t.newLine("int A,B,C,D;")
+# dec = Decl()
+# dec.parseDecl()
+# dec.printDecl()
