@@ -17,8 +17,8 @@ class DeclSeq:
     def printDeclSeq(self):
         self.decl.printDecl()
 
-settings.init()
-settings.t.newLine("int A,B,C,D;\nint Z;")
-declSeq = DeclSeq()
-declSeq.parseDeclSeq()
-declSeq.printDeclSeq()
+# settings.init()
+# settings.t.newLine("int A,B,C,D;\nint Z;")
+# declSeq = DeclSeq()
+# declSeq.parseDeclSeq()
+# declSeq.printDeclSeq()

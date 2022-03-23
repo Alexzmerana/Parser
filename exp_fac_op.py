@@ -80,8 +80,8 @@ class Op:
             self.exp.printExp()
 
 
-settings.init()
-settings.t.newLine("2*2+2*2-3*3-1*A")
-exp = Exp()
-exp.parseExp()
-exp.printExp()
+# settings.init()
+# settings.t.newLine("2*2+2*2-3*3-1*A")
+# exp = Exp()
+# exp.parseExp()
+# exp.printExp()
