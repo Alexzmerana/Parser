@@ -16,6 +16,13 @@ class Id:
 
     def declared(self):
         return self.id in Id.idDict.keys()
+    
+    def exeId(self):
+        if(self.declared):
+            return Id.idDict.get(self.id)
+    
+    def assignId(self, val):
+        Id.idDict[self.id] = val
 
 # settings.init()
 # settings.t.newLine("A1")
