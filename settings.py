@@ -1,4 +1,3 @@
-from re import S
 from tokenizer import Tokenizer
 
 def init(inputString = ""):

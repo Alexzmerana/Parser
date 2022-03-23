@@ -22,9 +22,9 @@ class Program:
 
     def printProgram(self):
         print("program")
-        print("\t", end='')
+        settings.s = settings.s + 1
         self.declSeq.printDeclSeq()
-        print("beign\n\t", end='')
+        print("beign")
         self.stmtSeq.printStmtSeq()
         print("end")
 

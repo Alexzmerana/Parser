@@ -24,7 +24,6 @@ class StmtSeq:
     def printStmtSeq(self):
         for stmt in self.stmts:
             stmt.printStmt()
-            print()
 
 # settings.init()
 # settings.t.newLine("C12312=2*2+2*2-3*3-1*A;\nPP=12;")

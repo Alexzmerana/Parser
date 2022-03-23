@@ -8,12 +8,14 @@ class Id:
 
     def parseId(self):
         if(self.id not in Id.idDict.keys()):
-            Id.idDict[self.id] = 'nil'
+            Id.idDict[self.id] = None
         settings.t.skipToken()
 
     def printId(self):
         print(self.id, end ='')
 
+    def declared(self):
+        return self.id in Id.idDict.keys()
 
 # settings.init()
 # settings.t.newLine("A1")

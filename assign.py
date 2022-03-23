@@ -20,10 +20,11 @@ class Assign:
             settings.t.skipToken()
     
     def printAssign(self):
+        settings.printTabs()
         self.id.printId()
         print('=', end='')
         self.exp.printExp()
-        print(';', end='')
+        print(';')
     
 # settings.init()
 # settings.t.newLine("C12312=2*2+2*2-3*3-1*A;")

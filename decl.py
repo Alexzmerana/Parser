@@ -17,6 +17,7 @@ class Decl:
             print("parseDecl: ERROR expecting \'int\' received", settings.t.token())
 
     def printDecl(self):
+        settings.printTabs()
         print("int ", end='')
         self.idList.printIdList()
         print(';')
