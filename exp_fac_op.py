@@ -8,15 +8,15 @@ class Exp:
         self.altNo = 1
     
     def parseExp(self):
+        success = True
         fac = Fac()
-        fac.parseFac()
+        if(not fac.parseFac()): success = False
         self.facs.append(fac)
         if(settings.t.token() == '+' or settings.t.token() == '-'):
-            # if(settings.t.token() == '+'): self.altNo = 2
-            # else: self.altNo = 3
             self.facs.append(settings.t.token())
             settings.t.skipToken()
-            self.parseExp()
+            if(not self.parseExp()): success = False
+        return success
     
     def printExp(self):
         for fac in self.facs:
@@ -46,12 +46,14 @@ class Fac:
         self.altNo = 1
 
     def parseFac(self):
+        success = True
         op = Op()
-        op.parseOp()
+        if(not op.parseOp()): success = False
         self.ops.append(op)
         if(settings.t.token() == '*'):
             settings.t.skipToken()
-            self.parseFac()
+            if(not self.parseFac()): success = False
+        return success
     
     def printFac(self):
         for op in self.ops:
@@ -78,6 +80,7 @@ class Op:
         
 
     def parseOp(self):
+        success = True
         self.token = settings.t.getToken()
         if(self.token == 31):
             self.num = settings.t.intVal()
@@ -85,6 +88,9 @@ class Op:
         elif(self.token == 32):
             self.id = Id()
             self.id.parseId()
+            if(not self.id.isDeclared()):
+                print("parseOp: ERROR id:", self.id.idName, " has not been declared")
+                success = False
         elif(self.token == 20):
             settings.t.skipToken()
             self.exp = Exp()
@@ -92,6 +98,8 @@ class Op:
             settings.t.skipToken()
         else:
             print("parseOp: ERROR received in valide token:", settings.t.token())
+            success = False
+        return success
 
     def printOp(self):
         if(self.num):
@@ -105,7 +113,6 @@ class Op:
         if(self.num): return int(self.num)
         elif(self.id): 
             idVal = self.id.exeId()
-            if(not idVal): print("exeOp: ERROR id '", self.id.id,"' has no value", sep='')
         else: return self.exp.exeExp()
 
 

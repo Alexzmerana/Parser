@@ -4,25 +4,35 @@ class Id:
     idDict = {}
 
     def __init__(self):
-        self.id = settings.t.idName()
+        self.idName = None
 
     def parseId(self):
-        if(self.id not in Id.idDict.keys()):
-            Id.idDict[self.id] = None
+        self.idName = settings.t.token()
         settings.t.skipToken()
 
-    def printId(self):
-        print(self.id, end ='')
+    def declareId(self):
+        if(self.idName not in Id.idDict.keys()):
+            Id.idDict[self.idName] = None
+        else:
+            print("declareId: ERROR id:", self.idName, " is already declared")
 
-    def declared(self):
-        return self.id in Id.idDict.keys()
+    def printId(self):
+        print(self.idName, end ='')
+
+    def isDeclared(self):
+        return self.idName in Id.idDict.keys()
     
+    def isInit(self):
+        return Id.idDict[self.idName] != None
+
     def exeId(self):
-        if(self.declared):
-            return Id.idDict.get(self.id)
+        if(self.isInit()):
+            return Id.idDict.get(self.idName)
+        else:
+            print("exeId: ERROR id:", self.idName, " has not been assigned a value")
     
     def assignId(self, val):
-        Id.idDict[self.id] = val
+        Id.idDict[self.idName] = val
 
 # settings.init()
 # settings.t.newLine("A1")
