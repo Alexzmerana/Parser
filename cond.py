@@ -120,8 +120,8 @@ class Cond:
         elif(self.altNo == 3): return (self.cond1.exeCond and self.cond2.exeCond())
         else: return (self.cond1.exeCond() or self.cond2.exeCond())
 
-settings.init("[!(1>1) && [!(1==1) || (2>=2)]]")
-cond = Cond()
-cond.parseCond()
-cond.printCond()
-print(cond.exeCond())
+# settings.init("[!(1>1) && [!(1==1) || (2>=2)]]")
+# cond = Cond()
+# cond.parseCond()
+# cond.printCond()
+# print(cond.exeCond())
