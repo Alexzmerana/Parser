@@ -89,7 +89,10 @@ class Op:
             self.id = Id()
             self.id.parseId()
             if(not self.id.isDeclared()):
-                print("parseOp: ERROR id:", self.id.idName, " has not been declared")
+                print("parseOp: ERROR id:", self.id.idName, "has not been declared")
+                return False
+            elif(not self.id.isInit()):
+                print("parseOp: ERROR id", self.id.idName, "has no value")
                 return False
         elif(self.token == 20):
             settings.t.skipToken()
@@ -97,7 +100,7 @@ class Op:
             self.exp.parseExp()
             settings.t.skipToken()
         else:
-            print("parseOp: ERROR received in valide token:", settings.t.token())
+            print("parseOp: ERROR received in valid token:", settings.t.token())
             return False
         return True
 

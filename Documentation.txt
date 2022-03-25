@@ -1,0 +1,8 @@
+The way I tackled the interpreter was by making a class for each non-terminal. So for parsing parseProgram will 
+parse all the things unique to program (like detecting program, begin... ). All parse functions will return True or False 
+whether or not it successfully parsed. The program class has three methods parse, print, and execute which do exactly what 
+they sound like. Load the name of the data file and text of the program by doing settings.init(dataFileName, programText).
+The create a program object and run the parse method, print method, then execute method. 
+I tested this project by using the test programs from the test file from the tokenizer project as well as 
+programs people posted on piazza. I'd edit the files to make sure I'd get errors and proper responses like using an undeclared variable
+or a variable that hasnt been initialized.

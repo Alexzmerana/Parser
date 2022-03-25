@@ -24,7 +24,7 @@ class IdList:
         for id in self.idsList:
             if(not id.isDeclared()): 
                 return False, id.idName
-        return True
+        return True, id.idName
             
         
             
