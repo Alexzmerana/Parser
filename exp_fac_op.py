@@ -21,7 +21,7 @@ class Exp:
     def printExp(self):
         for fac in self.facs:
             if(fac == '+' or fac == '-'):
-                print(fac, end='')
+                print('', fac, end=' ')
             elif(type(fac) == type(Fac())):
                 fac.printFac()
             else: print("printExp: ERROR in valid input:", fac)
@@ -59,7 +59,7 @@ class Fac:
         for op in self.ops:
             op.printOp()
             if(len(self.ops) - self.ops.index(op) > 1):
-                print('*', end='')
+                print(' * ', end='')
 
     def exeFac(self):
         facVal = 1
@@ -112,7 +112,7 @@ class Op:
     def exeOp(self):
         if(self.num): return int(self.num)
         elif(self.id): 
-            idVal = self.id.exeId()
+            return self.id.exeId()
         else: return self.exp.exeExp()
 
 

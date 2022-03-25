@@ -37,6 +37,7 @@ class StmtSeq:
     def exeStmtSeq(self):
         for stmt in self.stmts:
             stmt.exeStmt()
+
 class Stmt:
     
     def __init__(self):
@@ -80,7 +81,6 @@ class Stmt:
         elif(self.loop): self.loop.exeLoop()
         elif(self.inStmt): self.inStmt.exeIn()
         elif(self.out): self.out.exeOut()
-    
 
 class Assign:
 
@@ -89,9 +89,8 @@ class Assign:
         self.exp = Exp()
 
     def parseAssign(self):
-        
+        self.id.parseId()
         if(self.id.isDeclared()):
-            self.id.parseId()
             if(settings.t.token() == '='):
                 settings.t.skipToken()
                 if(not self.exp.parseExp()): return False
@@ -111,7 +110,7 @@ class Assign:
     def printAssign(self):
         settings.printTabs()
         self.id.printId()
-        print('=', end='')
+        print(' =', end=' ')
         self.exp.printExp()
         print(';')
     
@@ -119,6 +118,7 @@ class Assign:
         val = self.exp.exeExp()
         self.id.assignId(val)
         return self.id.exeId()
+
 class If:
 
     def __init__(self):
@@ -132,7 +132,7 @@ class If:
         if(settings.t.token() == 'if'):
             settings.t.skipToken()
             self.cond = Cond()
-            self.cond.parseCond()
+            if(not self.cond.parseCond()): return False
             if(settings.t.token() == 'then'):
                 settings.t.skipToken()
                 self.stmtSeq1 = StmtSeq()
@@ -171,21 +171,30 @@ class If:
         return True
 
     def printIf(self):
-        print('if', end='')
+        settings.printTabs()
+        print('if ', end='')
         self.cond.printCond()
-        print('then')
+        print(' then')
+        settings.s += 1
         self.stmtSeq1.printStmtSeq()
+        settings.s -= 1
         if(self.altNo == 2):
+            settings.printTabs()
             print('else')
+            settings.s += 1
             self.stmtSeq2.printStmtSeq()
+            settings.s -= 1
+            settings.printTabs()
             print('end;')
-        else: print('end;')
+        else: 
+            settings.printTabs()
+            print('end;')
 
     def exeIf(self):
         if(self.cond.exeCond()):
             self.stmtSeq1.exeStmtSeq()
         elif(self.altNo == 2):
-            self.stmtSeq2()
+            self.stmtSeq2.exeStmtSeq()
                 
 class Loop:
 
@@ -209,21 +218,27 @@ class Loop:
                 settings.t.skipToken()
                 self.stmtSeq = StmtSeq()
                 if(not self.stmtSeq.parseStmtSeq()): return False
-                if(settings.t.token != 'end'):
+                if(settings.t.token() != 'end'):
                     print("parseLoop: ERROR expecting end received", settings.t.token())
                     return False
                 else:
+                    settings.t.skipToken()
                     if(settings.t.token() != ';'):
                         print("parseLoop: ERROR expecting ; received", settings.t.token())
                         return False
+                    else: settings.t.skipToken()
         return True
                     
 
     def printLoop(self):
-        print("while", end='')
+        settings.printTabs()
+        print("while ", end='')
         self.cond.printCond()
-        print('loop')
+        print(' loop')
+        settings.s += 1
         self.stmtSeq.printStmtSeq()
+        settings.s -= 1
+        settings.printTabs()
         print('end;')
 
     def exeLoop(self):
@@ -231,9 +246,9 @@ class Loop:
             self.stmtSeq.exeStmtSeq()
     
 class In:
-
+    dataFile = None
     def __init__(self):
-        self.idList = None()
+        self.idList = None
 
     def parseIn(self):
         
@@ -241,10 +256,13 @@ class In:
             print("parseIn: ERROR expecting read received", settings.t.token())
             return False
         else:
+            In.dataFile = open(settings.dataFileName)
             settings.t.skipToken()
             self.idList = IdList()
             self.idList.parseIdList()
-            if(not self.idList.areDeclared()): return False
+            if(not self.idList.areDeclared()[0]): 
+                print("parseIn: ERROR id: ", self.idList.areDeclared()[1], " has not been declared", sep='')
+                return False
             if(settings.t.token() != ';'):
                 print("parseIn: ERROR expected ; received". settings.t.token())
                 return False
@@ -253,9 +271,19 @@ class In:
         return True
     
     def printIn(self):
-        print('read', end='')
+        settings.printTabs()
+        print('read ', end='')
         self.idList.printIdList()
         print(';')
+
+    def exeIn(self):
+        for id in self.idList.idsList:
+            data = In.dataFile.readline()
+            if(data):
+                id.assignId(int(data))
+            else:
+                print("exeIn: ERROR nothing to read for id", id.id)
+                return
 
 class Out:
 
@@ -282,9 +310,16 @@ class Out:
         return True
 
     def printOut(self):
-        print('write', end='')
+        settings.printTabs()
+        print('write ', end='')
         self.idList.printIdList()
         print(';')
+
+    def exeOut(self):
+        for id in self.idList.idsList:
+            id.printId()
+            print(' = ' , end='')
+            print(id.exeId())
 
 # settings.init('while (A>2) loop\n A = A-1;\nend; ')
 # loop = Loop()

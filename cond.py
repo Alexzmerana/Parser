@@ -13,10 +13,10 @@ class CompOp:
         elif(self.compOp == '<'): self.altNo = 3
         elif(self.compOp == '>'): self.altNo = 4
         elif(self.compOp == '<='): self.altNo = 5
-        else: self.altNo = 6
+        elif(self.compOp == '>='): self.altNo = 6
 
     def printCompOp(self):
-        print(self.compOp, end='')
+        print('', self.compOp, end=' ')
 
 class Comp:
 
@@ -111,13 +111,13 @@ class Cond:
             print('!', end='')
             self.cond1.printCond()
         else:
-            print('[',end='')
+            print('[',end=' ')
             self.cond1.printCond()
             if(self.altNo == 3):
-                print('&&', end='')
+                print(' &&', end=' ')
                 self.cond2.printCond()
             else:
-                print('||', end='')
+                print(' ||', end=' ')
                 self.cond2.printCond()
             print(']', end='')
 

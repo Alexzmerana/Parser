@@ -4,10 +4,11 @@ from decl import Decl
 class DeclSeq:
 
     def __init__(self):
-        self.decl = Decl()
+        self.decl = None
 
     def parseDeclSeq(self):
         if(settings.t.token() == "int"):
+            self.decl = Decl()
             self.decl.parseDecl()
             if(settings.t.token() == "int"):
                 self.parseDeclSeq()
@@ -17,8 +18,7 @@ class DeclSeq:
     def printDeclSeq(self):
         self.decl.printDecl()
     
-    def exeDeclSeq(self):
-        self.decl.exeDecl()
+
 
 # settings.init()
 # settings.t.newLine("int A,B,C,D;\nint Z;")

@@ -15,19 +15,15 @@ class IdList:
             self.parseIdList()
     
     def printIdList(self):
-        for i in range(len(self.idsList)-1):
-            self.idsList[i].printId()
-            print(", ", end='')
-        self.idsList[i+1].printId()
-
-    def exeIdList(self):
         for id in self.idsList:
-            id.declareId()
+            id.printId()
+            if(self.idsList.index(id) + 1 != len(self.idsList)):
+                print(", ", end='')
 
     def areDeclared(self):
         for id in self.idsList:
             if(not id.isDeclared()): 
-                return False
+                return False, id.idName
         return True
             
         

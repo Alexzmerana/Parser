@@ -4,12 +4,15 @@ from idlist import IdList
 class Decl:
 
     def __init__(self):
-        self.idList = IdList()
+        self.idList = None
         
     def parseDecl(self):
         if(settings.t.token() == 'int'):
             settings.t.skipToken()
+            self.idList = IdList()
             self.idList.parseIdList()
+            for id in self.idList.idsList:
+                id.declareId()
             if(settings.t.token() != ';'):
                 print("parseDecl: ERROR expecting \';\' received", settings.t.token())
             else: settings.t.skipToken()
@@ -22,8 +25,6 @@ class Decl:
         self.idList.printIdList()
         print(';')
 
-    def exeDecl(self):
-        self.idList.exeIdList()
 
 
 # settings.init()
