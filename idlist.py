@@ -19,6 +19,17 @@ class IdList:
             self.idsList[i].printId()
             print(", ", end='')
         self.idsList[i+1].printId()
+
+    def exeIdList(self):
+        for id in self.idsList:
+            id.declareId()
+
+    def areDeclared(self):
+        for id in self.idsList:
+            if(not id.isDeclared()): 
+                return False
+        return True
+            
         
             
 

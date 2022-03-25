@@ -8,15 +8,15 @@ class Exp:
         self.altNo = 1
     
     def parseExp(self):
-        success = True
+        
         fac = Fac()
-        if(not fac.parseFac()): success = False
+        if(not fac.parseFac()): return False
         self.facs.append(fac)
         if(settings.t.token() == '+' or settings.t.token() == '-'):
             self.facs.append(settings.t.token())
             settings.t.skipToken()
-            if(not self.parseExp()): success = False
-        return success
+            if(not self.parseExp()): return False
+        return True
     
     def printExp(self):
         for fac in self.facs:
@@ -46,14 +46,14 @@ class Fac:
         self.altNo = 1
 
     def parseFac(self):
-        success = True
+        
         op = Op()
-        if(not op.parseOp()): success = False
+        if(not op.parseOp()): return False
         self.ops.append(op)
         if(settings.t.token() == '*'):
             settings.t.skipToken()
-            if(not self.parseFac()): success = False
-        return success
+            if(not self.parseFac()): return False
+        return True
     
     def printFac(self):
         for op in self.ops:
@@ -80,7 +80,7 @@ class Op:
         
 
     def parseOp(self):
-        success = True
+        
         self.token = settings.t.getToken()
         if(self.token == 31):
             self.num = settings.t.intVal()
@@ -90,7 +90,7 @@ class Op:
             self.id.parseId()
             if(not self.id.isDeclared()):
                 print("parseOp: ERROR id:", self.id.idName, " has not been declared")
-                success = False
+                return False
         elif(self.token == 20):
             settings.t.skipToken()
             self.exp = Exp()
@@ -98,8 +98,8 @@ class Op:
             settings.t.skipToken()
         else:
             print("parseOp: ERROR received in valide token:", settings.t.token())
-            success = False
-        return success
+            return False
+        return True
 
     def printOp(self):
         if(self.num):

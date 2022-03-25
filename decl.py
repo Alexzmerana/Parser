@@ -22,6 +22,8 @@ class Decl:
         self.idList.printIdList()
         print(';')
 
+    def exeDecl(self):
+        self.idList.exeIdList()
 
 
 # settings.init()

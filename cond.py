@@ -26,18 +26,23 @@ class Comp:
         self.op2 = None
 
     def parseComp(self):
+        
         if(settings.t.token() == '('):
             settings.t.skipToken()
             self.op1 = Op()
-            self.op1.parseOp()
+            if(not self.op1.parseOp()): return False
             self.compOp = CompOp()
             self.compOp.parseCompOp()
             self.op2 = Op()
-            self.op2.parseOp()
+            if(not self.op2.parseOp()): return False
             if(settings.t.token() != ')'):
                 print("parseComp: ERROR expecting ( received", settings.t.token())
+                return False
             else: settings.t.skipToken()
-        else: print("parseComp: ERROR expecting ( received", settings.t.token())
+        else: 
+            print("parseComp: ERROR expecting ( received", settings.t.token())
+            return False
+        return True
 
     def printComp(self):
         print('(',end='')
@@ -63,39 +68,41 @@ class Cond:
         self.altNo = 1
 
     def parseCond(self):
+        
         token = settings.t.token()
         if(token == '('): 
             self.comp = Comp()
-            self.comp.parseComp()
+            if(not self.comp.parseComp()): return False
         elif(token == '!'):
             self.altNo = 2
             self.cond1 = Cond()
             settings.t.skipToken()
-            self.cond1.parseCond()
+            if(not self.cond1.parseCond()): return False
         elif(token == '['):
             settings.t.skipToken()
             self.cond1 = Cond()
             self.cond2 = Cond()
-            self.cond1.parseCond()
+            if(not self.cond1.parseCond()): return False
             if(settings.t.token() == '&&'):
                 self.altNo = 3
                 settings.t.skipToken()
-                self.cond2.parseCond()
+                if(not self.cond2.parseCond()): return False
                 if(settings.t.token() != ']'):
                     print("parseCond: ERROR expected ] received", settings.t.token())
-                    return
+                    return False
                 else: settings.t.skipToken()
             elif(settings.t.token() == '||'):
                 self.altNo = 4
                 settings.t.skipToken()
-                self.cond2.parseCond()
+                if(not self.cond2.parseCond()): return False
                 if(settings.t.token() != ']'):
                     print("parseCond: ERROR expected ] received", settings.t.token())
-                    return
+                    return False
                 else: settings.t.skipToken()
             else: 
                 print("parseCond: ERROR expected && or || received", settings.t.token())
-                return
+                return False
+        return True
 
     def printCond(self):
         if(self.altNo == 1):

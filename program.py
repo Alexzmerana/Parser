@@ -14,11 +14,16 @@ class Program:
             self.declSeq.parseDeclSeq()
             if(settings.t.token() == 'begin'):
                 settings.t.skipToken()
-                self.stmtSeq.parseStmtSeq()
+                if(not self.stmtSeq.parseStmtSeq()): return False
                 if(settings.t.token() != 'end'):
                     print("parseProgram: ERROR expecting end received:", settings.t.token())
-            else: print("parseProgram: ERROR expecting begin received", settings.t.token())
-        else: print("parseProgram: ERROR expected program received", settings.t.token())
+                    return False
+            else: 
+                print("parseProgram: ERROR expecting begin received", settings.t.token())
+                return False
+        else: 
+            print("parseProgram: ERROR expected program received", settings.t.token())
+            return False
 
     def printProgram(self):
         print("program")
@@ -27,9 +32,13 @@ class Program:
         print("beign")
         self.stmtSeq.printStmtSeq()
         print("end")
+    
+    def exeProgram(self):
+        self.declSeq.exeDeclSeq()
+        self.stmtSeq.exeStmtSeq()
 
-settings.init()
-settings.t.newLine("program\nint C12312, A, PP;\nbegin\nC12312=2*2+2*2-3*3-1*A;\nPP=12;\nend")
-program = Program()
-program.parseProgram()
-program.printProgram()
+# settings.init()
+# settings.t.newLine("program\nint C12312, A, PP;\nbegin\nC12312=2*2+2*2-3*3-1*A;\nPP=12;\nend")
+# program = Program()
+# program.parseProgram()
+# program.printProgram()

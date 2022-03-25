@@ -1,0 +1,6 @@
+program
+int A, B;
+being
+A = 2;
+B = 3;
+end;

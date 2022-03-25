@@ -16,6 +16,9 @@ class DeclSeq:
     
     def printDeclSeq(self):
         self.decl.printDecl()
+    
+    def exeDeclSeq(self):
+        self.decl.exeDecl()
 
 # settings.init()
 # settings.t.newLine("int A,B,C,D;\nint Z;")

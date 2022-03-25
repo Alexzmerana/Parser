@@ -17,18 +17,18 @@ class StmtSeq:
             token == 'while' or token == 'read' or token == 'write')
     
     def parseStmtSeq(self):
-        success = True
+        
         if(self.isStmt()):
             stmt = Stmt()
-            if(not stmt.parseStmt()): success = False
+            if(not stmt.parseStmt()): return False
             self.stmts.append(stmt)
             if(self.isStmt()):
-                if(not self.parseStmtSeq()): success = False
+                if(not self.parseStmtSeq()): return False
             return True
         else:
             print("parseStmtSeq: ERROR token is not apart of a stmt received:", settings.t.token())
-            success = False
-        return success
+            return False
+        return True
     
     def printStmtSeq(self):
         for stmt in self.stmts:
@@ -47,25 +47,25 @@ class Stmt:
         self.out = None
 
     def parseStmt(self):
-        success = True
+        
         token = settings.t.token()
         if(settings.t.getToken() == settings.t.IDENTIFIER_ID):
             self.assign = Assign()
-            if(not self.assign.parseAssign()): success = False
+            if(not self.assign.parseAssign()): return False
         elif(token == 'if'):
             self.ifStmt = If()
-            if(not self.ifStmt.parseIf()): success = False
+            if(not self.ifStmt.parseIf()): return False
         elif(token == 'while'):
             self.loop = Loop()
-            if(not self.loop.parseLoop()): success = False           
+            if(not self.loop.parseLoop()): return False           
         elif(token == 'read'):
             self.inStmt = In()
-            if(not self.inStmt.parseIn()): success = False            
+            if(not self.inStmt.parseIn()): return False            
         elif(token == 'write'):
             self.out = Out()
-            if(not self.out.parseOut()): success = False          
+            if(not self.out.parseOut()): return False          
         else: print("parseStmt: ERROR not able to parse a statement with token:", token)
-        return success
+        return True
 
     def printStmt(self):
         if(self.assign): self.assign.printAssign()
@@ -89,24 +89,24 @@ class Assign:
         self.exp = Exp()
 
     def parseAssign(self):
-        success = True
+        
         if(self.id.isDeclared()):
             self.id.parseId()
             if(settings.t.token() == '='):
                 settings.t.skipToken()
-                if(not self.exp.parseExp()): success = False
+                if(not self.exp.parseExp()): return False
             else:
                 print("parseAssign: ERROR expecting = received:", settings.t.token())
-                success = False
+                return False
             if(settings.t.token() != ';'):
                 print("parseAssign: ERROR expecting ; received", settings.t.token())
-                success = False
+                return False
             else:
                 settings.t.skipToken()
         else: 
             print("parseAssign: ERROR id \'", settings.t.token(), "\' not declared", sep='')
-            success = False
-        return success
+            return False
+        return True
     
     def printAssign(self):
         settings.printTabs()
@@ -128,7 +128,7 @@ class If:
         self.altNo = 1
 
     def parseIf(self):
-        success = True
+        
         if(settings.t.token() == 'if'):
             settings.t.skipToken()
             self.cond = Cond()
@@ -136,39 +136,39 @@ class If:
             if(settings.t.token() == 'then'):
                 settings.t.skipToken()
                 self.stmtSeq1 = StmtSeq()
-                if(not self.stmtSeq1.parseStmtSeq()): success = False
+                if(not self.stmtSeq1.parseStmtSeq()): return False
                 if(settings.t.token() == 'else'):
                     self.altNo = 2
                     settings.t.skipToken()
                     self.stmtSeq2 = StmtSeq()
-                    if(not self.stmtSeq2.parseStmtSeq()): success = False
+                    if(not self.stmtSeq2.parseStmtSeq()): return False
                     if(settings.t.token() == 'end'):
                         settings.t.skipToken()
                         if(settings.t.token() == ';'):
                             settings.t.skipToken()
                         else: 
                             print("parseIf: ERROR expecting ; received", settings.t.token())
-                            success = False
+                            return False
                     else: 
                         print("parseIf: ERROR expecting end received", settings.t.token())
-                        success = False
+                        return False
                 elif(settings.t.token() != 'end'):
                     print("parseIf: ERROR expecting end received", settings.t.token())
-                    success = False
+                    return False
                 else:
                     settings.t.skipToken()
                     if(settings.t.token() != ';'):
                         print("parseIf: ERROR expecting ; received", settings.t.token())
-                        success = False
+                        return False
                     else:
                         settings.t.skipToken()
             else: 
                 print("parseIf: ERROR expecting then received", settings.t.token())
-                success = False
+                return False
         else: 
             print("parseIf: ERROR expecting if received", settings.t.token())
-            success = False
-        return success
+            return False
+        return True
 
     def printIf(self):
         print('if', end='')
@@ -194,29 +194,29 @@ class Loop:
         self.stmtSeq = None
     
     def parseLoop(self):
-        success = True
+        
         if(settings.t.token() != 'while'):
             print("parseLoop: ERROR expecting while received", settings.t.token())
-            success = False
+            return False
         else:
             settings.t.skipToken()
             self.cond = Cond()
-            self.cond.parseCond()
+            if(not self.cond.parseCond()): return False
             if(settings.t.token() != 'loop'):
                 print("parseLoop: ERROR expecting loop received", settings.t.token())
-                success = False
+                return False
             else:
                 settings.t.skipToken()
                 self.stmtSeq = StmtSeq()
-                if(not self.stmtSeq.parseStmtSeq()): success = False
+                if(not self.stmtSeq.parseStmtSeq()): return False
                 if(settings.t.token != 'end'):
                     print("parseLoop: ERROR expecting end received", settings.t.token())
-                    success = False
+                    return False
                 else:
                     if(settings.t.token() != ';'):
                         print("parseLoop: ERROR expecting ; received", settings.t.token())
-                        success = False
-        return success
+                        return False
+        return True
                     
 
     def printLoop(self):
@@ -236,21 +236,21 @@ class In:
         self.idList = None()
 
     def parseIn(self):
-        success = True
+        
         if(settings.t.token() != 'read'):
             print("parseIn: ERROR expecting read received", settings.t.token())
-            success = False
+            return False
         else:
             settings.t.skipToken()
             self.idList = IdList()
             self.idList.parseIdList()
-            if(not self.idList.areDeclared()): success = False
+            if(not self.idList.areDeclared()): return False
             if(settings.t.token() != ';'):
                 print("parseIn: ERROR expected ; received". settings.t.token())
-                success = False
+                return False
             else:
                 settings.t.skipToken()
-        return success
+        return True
     
     def printIn(self):
         print('read', end='')
@@ -263,25 +263,30 @@ class Out:
         self.idList = None
 
     def parseOut(self):
-        success = True
+        
         if(settings.t.token() != 'write'):
             print("parseOut: ERROR expecting write received", settings.t.token())
-            success = False
+            return False
         else:
             settings.t.skipToken()
             self.idList = IdList()
             self.idList.parseIdList()
             if(not self.idList.areDeclared()): 
                 print("parseOut: ERROR undeclared id")
-                success = False
+                return False
             if(settings.t.token() != ';'):
                 print("parseOut: ERROR expecting ; received", settings.t.token())
-                success = False
+                return False
             else:
                 settings.t.skipToken()
-        return success
+        return True
 
-settings.init('while (A>2) loop\n A = A-1;\nend; ')
-loop = Loop()
-loop.parseLoop()
-loop.printLoop()
+    def printOut(self):
+        print('write', end='')
+        self.idList.printIdList()
+        print(';')
+
+# settings.init('while (A>2) loop\n A = A-1;\nend; ')
+# loop = Loop()
+# loop.parseLoop()
+# loop.printLoop()
